@@ -1,5 +1,6 @@
 package com.fleetsync.auth_service.dto;
 
+import com.fleetsync.auth_service.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -21,5 +22,5 @@ public class RegisterRequest {
     @Size(min=5,max=10)
     private String password;
 
-    private String role;
+    private Role role;
 }

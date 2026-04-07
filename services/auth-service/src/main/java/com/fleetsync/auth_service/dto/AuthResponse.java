@@ -1,5 +1,6 @@
 package com.fleetsync.auth_service.dto;
 
+import com.fleetsync.auth_service.enums.Role;
 import lombok.Builder;
 import lombok.Data;
 import org.springframework.validation.annotation.Validated;
@@ -12,5 +13,5 @@ public class AuthResponse {
     private String refreshToken;
     private String tokenType;
     private String name;
-    private String role;//will later make it enum type
+    private Role role;
 }
