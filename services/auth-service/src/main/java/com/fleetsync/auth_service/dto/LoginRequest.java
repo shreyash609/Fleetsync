@@ -9,8 +9,8 @@ import org.springframework.validation.annotation.Validated;
 @Validated
 public class LoginRequest {
 
-    @NotBlank
     @Email
+    @NotBlank
     private String email;
 
     @NotBlank
