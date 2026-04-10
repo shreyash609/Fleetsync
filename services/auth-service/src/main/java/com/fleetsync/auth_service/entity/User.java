@@ -3,16 +3,20 @@ package com.fleetsync.auth_service.entity;
 import com.fleetsync.auth_service.enums.Role;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Data;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.validation.annotation.Validated;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
-@Data
+@Getter
+@Setter
 @Validated
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Table(name = "users")
 public class User {
 
     @Id

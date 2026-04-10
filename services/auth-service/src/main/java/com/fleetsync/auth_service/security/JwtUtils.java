@@ -24,11 +24,8 @@ public class JwtUtils {
     }
 
     public String generateAccessToken(String email, String role){
-        return Jwts.builder()
-                .setSubject(email)
-                .claim("role",role)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+        return Jwts.builder().subject(email)
+                .claim("role", role).issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + expiration))
                 .signWith(getSingingKey(), SignatureAlgorithm.HS256)
                 .compact();
 
@@ -54,8 +51,6 @@ public class JwtUtils {
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSingingKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
+                .build().parseSignedClaims(token).getPayload();
     }
 }
