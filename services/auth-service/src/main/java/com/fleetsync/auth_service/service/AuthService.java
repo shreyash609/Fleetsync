@@ -6,6 +6,7 @@ import com.fleetsync.auth_service.dto.RegisterRequest;
 import com.fleetsync.auth_service.entity.User;
 import com.fleetsync.auth_service.repository.UserRepository;
 import com.fleetsync.auth_service.security.JwtUtils;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -14,20 +15,15 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 @Service
+@RequiredArgsConstructor
 public class AuthService {
 
     private final UserRepository repository;
     private final RedisTemplate<Object, Object> redisTemplate;
-    private JwtUtils jwt;
+    private final JwtUtils jwt;
     private final PasswordEncoder passwordEncoder;
 
-    //autowiring
-    public AuthService(UserRepository repository, PasswordEncoder passwordEncoder, RedisTemplate<Object, Object> redisTemplate){
-        this.repository=repository;
-        this.passwordEncoder=passwordEncoder;
-        this.redisTemplate = redisTemplate;
-    }
-
+    //----------------Register--------------------------------------
     public AuthResponse register(RegisterRequest request) throws Exception {
 
         if(repository.existsByEmail(request.getEmail())){
@@ -47,6 +43,7 @@ public class AuthService {
        return generateToken(userCreated);
     }
 
+    //-----------------Login----------------------------------------
     public AuthResponse login(LoginRequest request) throws Exception {
 
         User user=repository.findByEmail(request.getEmail())
@@ -59,7 +56,8 @@ public class AuthService {
         return generateToken(user);
     }
 
-    private AuthResponse refresh(String refreshToken){
+    //----------------------refresh---------------------------------------
+    public AuthResponse refresh(String refreshToken){
 
         String email = redisTemplate.opsForValue().get("refresh:" + refreshToken).toString();
         if(email == null) throw new RuntimeException("Invalid or expired refresh token");
@@ -71,10 +69,12 @@ public class AuthService {
         return generateToken(user);
     }
 
+    //--------------logout--------------------------------------
     public void logout(String refreshToken) {
         redisTemplate.delete("refresh:" + refreshToken);
     }
 
+    //-------------------generateToken----------------------------
     private AuthResponse generateToken(User user){
 
         String accessToken= jwt.generateAccessToken(user.getEmail(), user.getPassword());
@@ -86,6 +86,7 @@ public class AuthService {
         return AuthResponse.builder()
                 .accessToken(accessToken)
                 .refreshToken(refreshToken)
+                .tokenType("bearer")
                 .name(user.getName())
                 .role(user.getRole())
                 .build();
