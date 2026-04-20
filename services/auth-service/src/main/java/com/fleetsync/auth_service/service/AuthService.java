@@ -39,12 +39,12 @@ public class AuthService {
          User user=User.builder()
                  .name(request.getName())
                  .email(request.getEmail())
-                 .password(request.getPassword())
+                 .password(hashedPassword)
                  .role(request.getRole())
                  .build();
 
        User userCreated= repository.save(user);
-       return generateTokenHelper(userCreated);
+       return generateToken(userCreated);
     }
 
     public AuthResponse login(LoginRequest request) throws Exception {
@@ -56,23 +56,32 @@ public class AuthService {
            throw new Exception("Invalid Credentials");
        }
 
-        return generateTokenHelper(user);
+        return generateToken(user);
     }
 
-//    private AuthResponse refresh(LoginRequest request){
-//
-//    }
-    private AuthResponse generateTokenHelper(User user){
+    private AuthResponse refresh(String refreshToken){
+
+        String email = redisTemplate.opsForValue().get("refresh:" + refreshToken).toString();
+        if(email == null) throw new RuntimeException("Invalid or expired refresh token");
+
+        User user=repository.findByEmail(email).orElseThrow(()-> new RuntimeException(("user not found")));
+
+        // rotate — delete old, issue new
+        redisTemplate.delete("refresh:" +refreshToken);
+        return generateToken(user);
+    }
+
+    public void logout(String refreshToken) {
+        redisTemplate.delete("refresh:" + refreshToken);
+    }
+
+    private AuthResponse generateToken(User user){
 
         String accessToken= jwt.generateAccessToken(user.getEmail(), user.getPassword());
         String refreshToken =  UUID.randomUUID().toString();
 
         //storing refreshToken in redis
-        redisTemplate.opsForValue().set(
-                "refresh" + refreshToken,
-                user.getEmail(),
-                7, TimeUnit.DAYS
-        );
+        redisTemplate.opsForValue().set("refresh:" + refreshToken,user.getEmail(), 7, TimeUnit.DAYS);
 
         return AuthResponse.builder()
                 .accessToken(accessToken)

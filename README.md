@@ -10,5 +10,11 @@
 
 - Backend: Spring Boot
 - Frontend: React
+- Architecture: Microservices
 
-## Setup (to be added)
+## Setup 
+
+-Mysql 
+-Redis 
+-intellij ide 
+-Spring Boot
