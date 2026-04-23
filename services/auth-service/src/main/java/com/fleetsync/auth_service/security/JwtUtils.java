@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 @Component
@@ -52,5 +53,13 @@ public class JwtUtils {
         return Jwts.parser()
                 .setSigningKey(getSingingKey())
                 .build().parseSignedClaims(token).getPayload();
+    }
+
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith((SecretKey) getSingingKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
     }
 }
