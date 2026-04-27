@@ -12,14 +12,14 @@ import org.springframework.validation.annotation.Validated;
 @Data
 public class RegisterRequest {
 
-    @NotBlank
+    @NotBlank(message = "name is required")
     private String name;
 
-    @Email
+    @Email(message = "valid email required")
     @NotBlank
     private String email;
 
-    @NotBlank
+    @NotBlank(message = "Password must be at least 8 characters")
     @Size(min=5,max=10)
     private String password;
 

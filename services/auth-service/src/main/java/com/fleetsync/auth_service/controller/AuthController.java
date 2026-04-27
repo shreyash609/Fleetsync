@@ -36,13 +36,13 @@ public class AuthController {
 
     //-----------refresh----------------------------------------
     @PostMapping("/refresh")
-    public ResponseEntity<AuthResponse> refresh(@RequestHeader("X-Refresh-Token:")String token ){
+    public ResponseEntity<AuthResponse> refresh(@RequestHeader("X-Refresh-Token")String token ){
         return ResponseEntity.ok(authService.refresh(token));
     }
 
     //-----------logout----------------------------------------
     @PostMapping("/logout")
-    public ResponseEntity<Void> logout(@RequestHeader("X-Refresh-Token:")String token){
+    public ResponseEntity<Void> logout(@RequestHeader("X-Refresh-Token")String token){
         authService.logout(token);
         return ResponseEntity.noContent().build();
     }
