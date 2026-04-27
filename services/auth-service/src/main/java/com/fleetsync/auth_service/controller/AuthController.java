@@ -24,18 +24,14 @@ public class AuthController {
 
     //-----------Register------------------------------------
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> authRegister(@Valid @RequestBody RegisterRequest registerRequest) throws Exception {
-
-        AuthResponse Authresponse=authService.register(registerRequest);
-        return ResponseEntity.ok(Authresponse);
+    public ResponseEntity<AuthResponse> authRegister(@Valid @RequestBody RegisterRequest registerRequest){
+        return ResponseEntity.ok(authService.register(registerRequest));
     }
 
     //------------Login----------------------------------------
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest) throws Exception {
-
-       AuthResponse authResponse= authService.login(loginRequest);
-        return ResponseEntity.ok(authResponse);
+    public ResponseEntity<AuthResponse> login(@Valid @RequestBody LoginRequest loginRequest){
+        return ResponseEntity.ok(authService.login(loginRequest));
     }
 
     //-----------refresh----------------------------------------

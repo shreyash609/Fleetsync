@@ -24,33 +24,33 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
 
     //----------------Register--------------------------------------
-    public AuthResponse register(RegisterRequest request) throws Exception {
+    public AuthResponse register(RegisterRequest request) {
 
         if(repository.existsByEmail(request.getEmail())){
-            throw new Exception("Email already exists");
+            throw new RuntimeException("Email already exists");
         }
 
         String hashedPassword=passwordEncoder.encode(request.getPassword());
 
-         User user=User.builder()
-                 .name(request.getName())
-                 .email(request.getEmail())
-                 .password(hashedPassword)
-                 .role(request.getRole())
-                 .build();
+        User user=User.builder()
+                .name(request.getName())
+                .email(request.getEmail())
+                .password(hashedPassword)
+                .role(request.getRole())
+                .build();
 
-       User userCreated= repository.save(user);
-       return generateToken(userCreated);
+         repository.save(user);
+        return generateToken(user);
     }
 
     //-----------------Login----------------------------------------
-    public AuthResponse login(LoginRequest request) throws Exception {
+    public AuthResponse login(LoginRequest request){
 
         User user=repository.findByEmail(request.getEmail())
                 .orElseThrow(()->new RuntimeException("user not found"));
 
        if(!passwordEncoder.matches(request.getPassword(),user.getPassword())){
-           throw new Exception("Invalid Credentials");
+           throw new RuntimeException("Invalid Credentials");
        }
 
         return generateToken(user);
