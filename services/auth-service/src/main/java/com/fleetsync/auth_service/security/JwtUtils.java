@@ -8,6 +8,7 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
 @Component
@@ -23,6 +24,7 @@ public class JwtUtils {
         return Keys.hmacShaKeyFor(secretKey.getBytes());
     }
 
+    //-------------generateAccessToken----------------------------------
     public String generateAccessToken(String email, String role){
         return Jwts.builder().subject(email)
                 .claim("role", role).issuedAt(new Date()).expiration(new Date(System.currentTimeMillis() + expiration))
@@ -31,26 +33,40 @@ public class JwtUtils {
 
     }
 
-    public String extractEmail(String token){
-        return extractAllClaims(token).getSubject();
-    }
-
-    public String extractRole(String token){
-        return extractAllClaims(token).get("role",String.class);
-    }
-
-    public boolean isTokenValid(String token){
-         try{
-             extractAllClaims(token);
-             return true;
-         }catch (Exception e){
-             return false;
-         }
-    }
-
+    //-------------extractAllClaims----------------------------------
     private Claims extractAllClaims(String token) {
         return Jwts.parser()
                 .setSigningKey(getSingingKey())
                 .build().parseSignedClaims(token).getPayload();
     }
+
+    //-------------parseClaims----------------------------------
+    private Claims parseClaims(String token) {
+        return Jwts.parser()
+                .verifyWith((SecretKey) getSingingKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+    }
+
+    //-------------isTokenValid----------------------------------
+    public boolean isTokenValid(String token){
+        try{
+            extractAllClaims(token);
+            return true;
+        }catch (Exception e){
+            return false;
+        }
+    }
+
+    //-------------extractEmail----------------------------------
+    public String extractEmail(String token){
+        return extractAllClaims(token).getSubject();
+    }
+
+    //-------------extractRole----------------------------------
+    public String extractRole(String token){
+        return extractAllClaims(token).get("role",String.class);
+    }
+
 }
