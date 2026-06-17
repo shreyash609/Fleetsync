@@ -1,7 +1,6 @@
 package com.fleetsync.job_service.entity;
 
-import com.fleetsync.job_service.enums.AvailabilityStatus;
-import com.fleetsync.job_service.enums.VehicleType;
+import com.fleetsync.job_service.enums.JobStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -16,38 +15,40 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name="driverProfiles")
-public class DriverProfile {
+@Table(name="jobs")
+public class Job {
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name="id")
-    private  User user;
+    private String title;
+
+    private string description;
 
     @NotNull
-    private String name;
+    private String pickupAddress;
 
     @NotNull
-    @Column(unique =true)
-    private String phone;
+    private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
-    private VehicleType vehicleType;
+    private JobStatus jobStatus;
 
-    @Enumerated(EnumType.STRING)
-    @NotNull
-    private AvailabilityStatus availabilityStatus;
+//    private Long dispatcherId;//need to see it later how we can do this
 
-    private Integer totalJobsCompleted = 0;
+    private Long  assignedDriverId;
+
+    private LocalDateTime assignedAt;
+
+    private LocalDateTime completedAt;
 
     @CreationTimestamp
-    @Column(updatable = false)
+    @Column(nullable = false,updatable = false)
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
+    @Column(updatable = true)
     private LocalDateTime updatedAt;
+
 }
