@@ -2,13 +2,14 @@ package com.fleetsync.job_service.entity;
 
 import com.fleetsync.job_service.enums.JobStatus;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -24,18 +25,20 @@ public class Job {
 
     private String title;
 
-    private string description;
+    private String description;
 
-    @NotNull
+    @Column(nullable = false)
     private String pickupAddress;
 
-    @NotNull
+    @Column(nullable = false)
     private String deliveryAddress;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private JobStatus jobStatus;
 
-//    private Long dispatcherId;//need to see it later how we can do this
+    @Column(nullable = false)
+    private Long dispatcherId;
 
     private Long  assignedDriverId;
 
@@ -48,7 +51,6 @@ public class Job {
     private LocalDateTime createdAt;
 
     @UpdateTimestamp
-    @Column(updatable = true)
     private LocalDateTime updatedAt;
 
 }

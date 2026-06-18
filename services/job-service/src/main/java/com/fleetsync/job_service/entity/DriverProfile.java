@@ -3,13 +3,14 @@ package com.fleetsync.job_service.entity;
 import com.fleetsync.job_service.enums.AvailabilityStatus;
 import com.fleetsync.job_service.enums.VehicleType;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
+
+import java.time.LocalDateTime;
 
 @Entity
 @Data
@@ -23,23 +24,21 @@ public class DriverProfile {
     @GeneratedValue(strategy= GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
-    @JoinColumn(name="id")
-    private  User user;
+    @Column(nullable = false)
+    private Long userId;
 
-    @NotNull
+    @Column(nullable = false)
     private String name;
 
-    @NotNull
-    @Column(unique =true)
+    @Column(nullable = false, unique =true)
     private String phone;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private VehicleType vehicleType;
 
     @Enumerated(EnumType.STRING)
-    @NotNull
+    @Column(nullable = false)
     private AvailabilityStatus availabilityStatus;
 
     private Integer totalJobsCompleted = 0;
