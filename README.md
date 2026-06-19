@@ -18,7 +18,7 @@ Fleetsync is a comprehensive solution for managing vehicle fleets with features 
 - [Project Structure](#project-structure)
 - [Configuration](#configuration)
 - [Contributing](#contributing)
-- [License](#license)
+
 
 ---
 
@@ -560,11 +560,6 @@ We welcome contributions! Please follow these steps:
 - Update documentation as needed
 - Ensure all tests pass before submitting PR
 
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
 ---
 
