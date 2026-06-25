@@ -5,17 +5,15 @@
     <option name="originalFiles">
       <list>
         <option value="$PROJECT_DIR$/services/auth-service/pom.xml" />
-        <option value="$PROJECT_DIR$/../../fleetsync/services/job-service/pom.xml" />
+        <option value="$USER_HOME$/fleetsync/services/job-service/pom.xml" />
         <option value="$PROJECT_DIR$/services/job-service/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
       <set>
-        <option value="$PROJECT_DIR$/../../fleetsync/services/job-service/pom.xml" />
+        <option value="$USER_HOME$/fleetsync/services/job-service/pom.xml" />
       </set>
     </option>
   </component>
-  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-26" project-jdk-type="JavaSDK">
-    <output url="file://$PROJECT_DIR$/out" />
-  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="openjdk-26" project-jdk-type="JavaSDK" />
 </project>
