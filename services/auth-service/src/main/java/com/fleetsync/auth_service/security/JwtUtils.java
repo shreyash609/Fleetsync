@@ -9,7 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
+//import javax.annotation.PostConstruct;
 import javax.crypto.SecretKey;
 import java.security.Key;
 import java.util.Date;
@@ -30,7 +30,7 @@ public class JwtUtils {
     /**
      * Validates JWT configuration during application startup
      */
-    @PostConstruct
+//    @PostConstruct
     public void validateConfig() {
         if (secretKey == null || secretKey.isEmpty()) {
             throw new IllegalStateException("jwt.secret is not configured. Please set jwt.secret in application.properties");
